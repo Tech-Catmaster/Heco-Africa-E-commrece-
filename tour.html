@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>HECO-Africa Slum Tour | Glassmorphism Experience</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #007bff;
+      --primary-dark: #0056cc;
+      --secondary: #ff6b35;
+      --accent: #00d4aa;
+      --dark: #121212;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --gray-light: #e9ecef;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 25px 50px rgba(0, 0, 0, 0.2);
+      --border-radius: 32px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Poppins', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      background-attachment: fixed;
+      color: var(--dark);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      min-height: 100vh;
+    }
+
+    /* ===== GLOWING CURSOR WITH TRAIL ===== */
+    .cursor {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 123, 255, 0.8), rgba(0, 212, 170, 0.4));
+      position: fixed;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s cubic-bezier(0.2, 1.2, 0.4, 1), height 0.3s cubic-bezier(0.2, 1.2, 0.4, 1);
+      filter: blur(4px);
+      will-change: left, top;
+      box-shadow: 0 0 25px rgba(0, 123, 255, 0.6);
+    }
+
+    .cursor.active {
+      width: 95px;
+      height: 95px;
+      background: radial-gradient(circle, rgba(0, 212, 170, 0.9), rgba(0, 123, 255, 0.5));
+      filter: blur(10px);
+      box-shadow: 0 0 50px rgba(0, 212, 170, 0.7);
+    }
+
+    .trail {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.5;
+      filter: blur(2px);
+      transition: opacity 0.3s ease;
+    }
+
+    /* ===== IPHONE SPRING ANIMATIONS ===== */
+    @keyframes iosSpring {
+      0% {
+        opacity: 0;
+        transform: scale(0.92) translateY(45px);
+      }
+
+      55% {
+        transform: scale(1.02) translateY(-5px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes iosBounce {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.04);
+      }
+    }
+
+    @keyframes floatPulse {
+
+      0%,
+      100% {
+        text-shadow: 0 0 20px rgba(0, 212, 170, 0.3);
+      }
+
+      50% {
+        text-shadow: 0 0 45px rgba(0, 212, 170, 0.7);
+      }
+    }
+
+    .ios-spring {
+      animation: iosSpring 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    }
+
+    /* ===== GLASSMORPHISM NAVBAR ===== */
+    .navbar {
+      width: 90%;
+      max-width: 1300px;
+      margin: 22px auto 0;
+      padding: 14px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-radius: 100px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+
+    .navbar.scrolled {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(35px);
+      margin-top: 14px;
+      width: 92%;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: white;
+      transition: all 0.2s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.02);
+    }
+
+    .logo-img {
+      height: 46px;
+      width: auto;
+      border-radius: 35px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+    }
+
+    .logo span {
+      background: linear-gradient(135deg, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ===== GLASS HERO SECTION ===== */
+    .tour-hero {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 160px 5% 100px;
+      position: relative;
+      color: white;
+    }
+
+    .tour-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 30%, rgba(0, 123, 255, 0.2), transparent 70%);
+      pointer-events: none;
+    }
+
+    .tour-hero h1 {
+      font-size: clamp(2.2rem, 8vw, 4.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff, #a0d2ff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: iosSpring 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards, floatPulse 3s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+
+    .tour-badge {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      padding: 10px 34px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      display: inline-block;
+      animation: iosBounce 2s ease-in-out infinite;
+      color: white;
+    }
+
+    .hero-sub {
+      max-width: 750px;
+      margin-top: 20px;
+      font-size: 1.15rem;
+      opacity: 0.92;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      padding: 16px 28px;
+      border-radius: 60px;
+    }
+
+    /* ===== SCROLL REVEAL ===== */
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(55px) scale(0.95);
+      transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .scroll-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* ===== GLASS TOUR CARDS ===== */
+    .tour-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      padding: 100px 6%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .tour-info-card {
+      flex: 1;
+      min-width: 280px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border-radius: 48px;
+      padding: 36px 32px;
+      transition: all 0.5s cubic-bezier(0.2, 0.95, 0.4, 1.1);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      color: white;
+    }
+
+    .tour-info-card:hover {
+      transform: translateY(-18px) scale(1.02);
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    .tour-info-card h2 {
+      font-size: 1.75rem;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .tour-info-card h2 i {
+      color: var(--accent);
+      font-size: 1.8rem;
+    }
+
+    .tour-highlights {
+      list-style: none;
+    }
+
+    .tour-highlights li {
+      margin-bottom: 16px;
+      padding-left: 32px;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .tour-highlights li:hover {
+      transform: translateX(8px);
+    }
+
+    .tour-highlights li:before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .tour-schedule {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .schedule-item {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      padding: 24px 16px;
+      border-radius: 32px;
+      text-align: center;
+      transition: all 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .schedule-item:hover {
+      transform: scale(1.08) translateY(-8px);
+      background: rgba(255, 255, 255, 0.25);
+      border-color: var(--accent);
+    }
+
+    .schedule-item i {
+      font-size: 2.2rem;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .schedule-item h4,
+    .schedule-item p {
+      color: white;
+    }
+
+    /* ===== GLASS PRICING SECTION ===== */
+    .pricing-section {
+      padding: 90px 6%;
+      margin: 30px 6%;
+      border-radius: 60px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .section-title:after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+      margin: 18px auto 0;
+      border-radius: 4px;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.8);
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 35px;
+      margin-top: 60px;
+    }
+
+    .pricing-card {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
+      border-radius: 44px;
+      padding: 45px 30px;
+      text-align: center;
+      transition: all 0.5s cubic-bezier(0.2, 0.95, 0.4, 1.1);
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      color: white;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-22px) scale(1.03);
+      background: rgba(255, 255, 255, 0.22);
+      border-color: var(--accent);
+      box-shadow: 0 40px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    .pricing-card.popular {
+      border: 2px solid var(--accent);
+      background: rgba(0, 212, 170, 0.15);
+    }
+
+    .popular-badge {
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: white;
+      padding: 7px 25px;
+      border-radius: 60px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .price-amount {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin: 25px 0;
+    }
+
+    .price-features {
+      list-style: none;
+      text-align: left;
+      margin-top: 25px;
+    }
+
+    .price-features li {
+      margin-bottom: 14px;
+      padding-left: 30px;
+      position: relative;
+    }
+
+    .price-features li:before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .info-note {
+      text-align: center;
+      margin-top: 45px;
+      padding: 22px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 40px;
+      color: white;
+    }
+
+    /* ===== GLASS FORM SECTION ===== */
+    .application-section {
+      padding: 90px 6%;
+      margin: 40px 6%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 60px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .application-form {
+      max-width: 850px;
+      margin: 50px auto 0;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    @media (min-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .required {
+      color: #ff6b6b;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 16px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 28px;
+      font-size: 1rem;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      font-family: inherit;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      color: white;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 5px rgba(0, 212, 170, 0.2);
+      transform: scale(1.01);
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    select option {
+      background: #2d2d5e;
+      color: white;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      padding: 18px 45px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-radius: 60px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.2, 1.2, 0.4, 1);
+      width: 100%;
+      margin-top: 25px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.5s, height 0.5s;
+    }
+
+    .submit-btn:hover::before {
+      width: 350px;
+      height: 350px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 123, 255, 0.4);
+    }
+
+    .submit-btn:active {
+      transform: scale(0.97);
+    }
+
+    .confirmation-message {
+      display: none;
+      background: linear-gradient(135deg, rgba(0, 176, 155, 0.9), rgba(150, 201, 61, 0.9));
+      backdrop-filter: blur(15px);
+      color: white;
+      padding: 35px;
+      border-radius: 44px;
+      text-align: center;
+      margin-top: 35px;
+      animation: iosSpring 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    }
+
+    .whatsapp-option {
+      text-align: center;
+      margin-top: 35px;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 44px;
+      color: white;
+    }
+
+    .whatsapp-btn {
+      background: #25D366;
+      color: white;
+      padding: 14px 35px;
+      border-radius: 60px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      transition: all 0.3s cubic-bezier(0.2, 1.2, 0.4, 1);
+      margin-top: 12px;
+    }
+
+    .whatsapp-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* ===== GLASS FOOTER ===== */
+    footer {
+      background: rgba(10, 12, 16, 0.8);
+      backdrop-filter: blur(20px);
+      color: white;
+      padding: 70px 6% 35px;
+      margin-top: 80px;
+      border-radius: 50px 50px 0 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 50px;
+      justify-content: space-between;
+    }
+
+    .footer-col {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .footer-col h3,
+    .footer-col h4 {
+      margin-bottom: 22px;
+      position: relative;
+      padding-bottom: 12px;
+    }
+
+    .footer-col h3:after,
+    .footer-col h4:after {
+      content: '';
+      position: absolute;
+      width: 45px;
+      height: 3px;
+      background: var(--accent);
+      bottom: 0;
+      left: 0;
+      border-radius: 3px;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 14px;
+    }
+
+    .footer-links a {
+      color: #ccc;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+      transform: translateX(6px);
+      display: inline-block;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 14px;
+      margin-top: 25px;
+    }
+
+    .social-link {
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      transition: all 0.25s ease;
+    }
+
+    .social-link:hover {
+      background: var(--accent);
+      transform: translateY(-6px);
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 45px;
+      margin-top: 45px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #aaa;
+    }
+
+    @media (max-width: 768px) {
+
+      .cursor,
+      .trail {
+        display: none;
+      }
+
+      body {
+        cursor: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="cursor" id="cursor"></div>
+
+  <nav class="navbar" id="navbar">
+    <a href="#" class="logo">
+      <img src="images/HECO-AFRICA (3).png" alt="HECO-AFRICA" class="logo-img"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <span>HECO-AFRICA</span>
+    </a>
+  </nav>
+
+  <section class="tour-hero">
+    <div class="tour-badge">✨ Experience & Transform ✨</div>
+    <h1>HECO-Africa Slum Tour</h1>
+    <div class="hero-sub">Join our immersive journey through Kibera and other communities. Experience firsthand the
+      challenges, resilience, and opportunities in urban settlements while contributing to sustainable change.</div>
+  </section>
+
+  <div class="tour-details">
+    <div class="tour-info-card scroll-reveal">
+      <h2><i class="fas fa-map-marked-alt"></i> Tour Highlights</h2>
+      <ul class="tour-highlights">
+        <li>Guided walk through Kibera community</li>
+        <li>Visit to local entrepreneurship projects</li>
+        <li>Interaction with community leaders and youth</li>
+        <li>Visit to HECO-Africa training centers</li>
+        <li>Cultural exchange and traditional meals</li>
+        <li>Photography opportunities (with permission)</li>
+        <li>Roundtable discussion on community solutions</li>
+      </ul>
+    </div>
+
+    <div class="tour-info-card scroll-reveal">
+      <h2><i class="fas fa-calendar-alt"></i> Tour Schedule</h2>
+      <div class="tour-schedule">
+        <div class="schedule-item">
+          <i class="fas fa-clock"></i>
+          <h4>Duration</h4>
+          <p>4-6 Hours</p>
+        </div>
+        <div class="schedule-item">
+          <i class="fas fa-users"></i>
+          <h4>Group Size</h4>
+          <p>2-15 People</p>
+        </div>
+        <div class="schedule-item">
+          <i class="fas fa-money-bill-wave"></i>
+          <h4>Contribution</h4>
+          <p>From $25-$50 per person</p>
+        </div>
+      </div>
+      <p style="margin-top: 22px; opacity: 0.85;">All contributions directly support HECO-Africa community programs</p>
+    </div>
+
+    <div class="tour-info-card scroll-reveal">
+      <h2><i class="fas fa-info-circle"></i> Important Information</h2>
+      <ul class="tour-highlights">
+        <li>Wear comfortable walking shoes</li>
+        <li>Bring a reusable water bottle</li>
+        <li>Respect local customs and traditions</li>
+        <li>Photography restrictions in certain areas</li>
+        <li>Safety briefing provided before tour</li>
+        <li>All ages welcome (minors with guardian)</li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="pricing-section scroll-reveal">
+    <h2 class="section-title">Tour Pricing</h2>
+    <p class="section-sub">Choose the pricing option that fits your group. All prices are per person and contribute
+      directly to community development projects.</p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3>Children (Under 16)</h3>
+        <div class="price-amount">$25</div>
+        <ul class="price-features">
+          <li>Full guided tour experience</li>
+          <li>Safety equipment provided</li>
+          <li>Traditional meal included</li>
+          <li>Educational materials</li>
+          <li>Must be accompanied by adult</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card popular">
+        <div class="popular-badge">⭐ MOST POPULAR</div>
+        <h3>Adults</h3>
+        <div class="price-amount">$50</div>
+        <ul class="price-features">
+          <li>Full guided tour experience</li>
+          <li>Safety equipment provided</li>
+          <li>Traditional meal included</li>
+          <li>Educational materials</li>
+          <li>Community donation included</li>
+          <li>Certificate of participation</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card">
+        <h3>Group (6+ People)</h3>
+        <div class="price-amount">$35</div>
+        <ul class="price-features">
+          <li>Special group rate</li>
+          <li>Private tour guide</li>
+          <li>Traditional meal included</li>
+          <li>Educational materials</li>
+          <li>Community donation included</li>
+          <li>Certificate for all participants</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-note">
+      <p style="font-weight: 600;"><i class="fas fa-info-circle" style="margin-right: 10px;"></i>Important Note</p>
+      <p>Children under 16 must be accompanied by at least one adult. For large groups (10+ people), please contact us
+        for special arrangements.</p>
+    </div>
+  </section>
+
+  <section class="application-section scroll-reveal">
+    <h2 class="section-title">Apply for the Tour</h2>
+    <p class="section-sub">Fill out the form below to book your spot. We'll contact you within 24 hours to confirm your
+      booking and provide payment details.</p>
+
+    <form id="tourForm" class="application-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name <span class="required">*</span></label>
+          <input type="text" id="firstName" required>
+        </div>
+        <div class="form-group">
+          <label>Last Name <span class="required">*</span></label>
+          <input type="text" id="lastName" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email Address <span class="required">*</span></label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+          <label>Phone Number <span class="required">*</span></label>
+          <input type="tel" id="phone" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nationality <span class="required">*</span></label>
+          <select id="nationality" required>
+            <option value="">Select your nationality</option>
+            <option>Kenyan</option>
+            <option>Other African</option>
+            <option>European</option>
+            <option>American</option>
+            <option>Asian</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Number of Participants <span class="required">*</span></label>
+          <select id="participants" required>
+            <option value="">Select number</option>
+            <option>1 Person</option>
+            <option>2 People</option>
+            <option>3 People</option>
+            <option>4 People</option>
+            <option>5 People</option>
+            <option>6+ People</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Number of Adults (16+) <span class="required">*</span></label>
+          <select id="adults" required>
+            <option value="">Select adults</option>
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6+</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Number of Children (Under 16)</label>
+          <select id="children">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6+</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Preferred Tour Date <span class="required">*</span></label>
+          <input type="date" id="preferredDate" required>
+        </div>
+        <div class="form-group">
+          <label>Preferred Time</label>
+          <select id="preferredTime">
+            <option>Morning (9 AM)</option>
+            <option>Afternoon (2 PM)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Additional Notes or Questions</label>
+        <textarea rows="3"
+          placeholder="Any special requirements, dietary restrictions, or questions you have..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+          <input type="checkbox" id="terms" required style="width: 20px; height: 20px; margin: 0;">
+          I agree to the <a href="#" style="color: var(--accent);">terms and conditions</a> and understand the tour
+          involves walking in urban areas <span class="required">*</span>
+        </label>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <i class="fas fa-paper-plane"></i> Submit Application
+      </button>
+
+      <div class="confirmation-message" id="confirmationMessage">
+        <i class="fas fa-check-circle" style="font-size: 3.5rem;"></i>
+        <h3 style="margin: 15px 0;">Application Submitted Successfully!</h3>
+        <p>Thank you for applying for the HECO-Africa Slum Tour. We have received your application and will contact you
+          within 24 hours to confirm your booking and provide payment details.</p>
+        <p style="margin-top: 18px;">A confirmation has been sent to <strong>theobasanjogolding@gmail.com</strong> and
+          <strong>hecoafrica@gmail.com</strong></p>
+      </div>
+
+      <div class="whatsapp-option">
+        <p>Prefer to apply via WhatsApp? Click below:</p>
+        <a href="https://wa.me/254705379295?text=Hello%20HECO-Africa!%20I%20would%20like%20to%20apply%20for%20the%20Slum%20Tour.%20I%20have%20questions%20about%20pricing."
+          class="whatsapp-btn" target="_blank">
+          <i class="fab fa-whatsapp"></i> Apply via WhatsApp
+        </a>
+        <p style="font-size: 0.85rem; margin-top: 12px;">Messages will go to +254705379295</p>
+      </div>
+    </form>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-col">
+        <div style="font-size: 1.6rem; font-weight: 800; margin-bottom: 18px;">HECO-<span
+            style="color: var(--accent);">AFRICA</span></div>
+        <p style="color: #ccc; line-height: 1.6;">Heat of Compassion. Empowering African youth through technology,
+          education, and community transformation.</p>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Info</h4>
+        <ul class="footer-links">
+          <li><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</li>
+          <li><i class="fas fa-phone"></i> +254 705 379 295</li>
+          <li><i class="fas fa-envelope"></i> theobasanjogolding@gmail.com</li>
+          <li><i class="fas fa-envelope"></i> hecoafrica@gmail.com</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Slum Tour</a></li>
+          <li><a href="#">Our Shop</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>&copy; 2025 HECO-Africa. All rights reserved. | Slum Tour Experience</p>
+    </div>
+  </footer>
+
+  <script>
+    // ===== GLOWING CURSOR WITH TRAIL =====
+    const cursor = document.getElementById('cursor');
+    let trailPositions = [];
+    const trailCount = 14;
+
+    if (cursor) {
+      for (let i = 0; i < trailCount; i++) {
+        const trail = document.createElement('div');
+        trail.className = 'trail';
+        document.body.appendChild(trail);
+        trailPositions.push({ el: trail, x: 0, y: 0 });
+      }
+
+      let mouseX = 0, mouseY = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursor.style.left = mouseX + 'px';
+        cursor.style.top = mouseY + 'px';
+      });
+
+      function updateTrail() {
+        trailPositions.forEach((trail, index) => {
+          if (index === 0) {
+            trail.x = mouseX;
+            trail.y = mouseY;
+          } else {
+            trail.x = trailPositions[index - 1].x;
+            trail.y = trailPositions[index - 1].y;
+          }
+          trail.el.style.left = trail.x + 'px';
+          trail.el.style.top = trail.y + 'px';
+          trail.el.style.opacity = 0.5 - (index * 0.03);
+        });
+        requestAnimationFrame(updateTrail);
+      }
+      updateTrail();
+
+      const hoverTargets = document.querySelectorAll('.pricing-card, .submit-btn, .whatsapp-btn, .schedule-item, .tour-info-card, a, button');
+      hoverTargets.forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+      });
+    }
+
+    // ===== CINEMATIC PARALLAX =====
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const hero = document.querySelector('.tour-hero');
+      if (hero) {
+        hero.style.backgroundPositionY = `${scrolled * 0.1}px`;
+      }
+
+      const navbar = document.getElementById('navbar');
+      if (navbar) {
+        if (scrolled > 50) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+      }
+
+      // Parallax for cards
+      const cards = document.querySelectorAll('.tour-info-card');
+      cards.forEach((card, i) => {
+        const offset = card.getBoundingClientRect().top;
+        if (offset < window.innerHeight && offset > -100) {
+          card.style.transform = `translateY(${scrolled * 0.02 * (i + 1) * -0.5}px)`;
+        }
+      });
+    });
+
+    // ===== SCROLL REVEAL OBSERVER =====
+    const revealElements = document.querySelectorAll('.scroll-reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // ===== 3D MAGNETIC HOVER PHYSICS =====
+    const cards = document.querySelectorAll('.pricing-card, .tour-info-card');
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width - 0.5) * 10;
+        const y = ((e.clientY - rect.top) / rect.height - 0.5) * -7;
+        card.style.transform = `perspective(1200px) rotateY(${x}deg) rotateX(${y}deg) translateY(-12px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+
+    // ===== FORM SUBMISSION =====
+    const form = document.getElementById('tourForm');
+    const confirmMsg = document.getElementById('confirmationMessage');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const firstName = document.getElementById('firstName')?.value.trim();
+      const lastName = document.getElementById('lastName')?.value.trim();
+      const email = document.getElementById('email')?.value.trim();
+      const phone = document.getElementById('phone')?.value.trim();
+      const terms = document.getElementById('terms')?.checked;
+
+      if (!firstName || !lastName || !email || !phone || !terms) {
+        alert('⚠️ Please fill all required fields and accept the terms.');
+        return;
+      }
+
+      if (!email.includes('@')) {
+        alert('⚠️ Please enter a valid email address.');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Submitting...';
+
+      setTimeout(() => {
+        confirmMsg.style.display = 'block';
+        confirmMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submitted! ✨';
+        form.reset();
+
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+        }, 3000);
+      }, 800);
+    });
+  </script>
+</body>
+
+</html>
