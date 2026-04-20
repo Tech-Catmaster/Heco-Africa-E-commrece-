@@ -1,4 +1,3 @@
-
 /* ========================================
    ROOT & GLOBAL RESET - Apple+ Level
    ======================================== */
@@ -318,22 +317,22 @@ body {
 /* ========================================
    SEARCH OVERLAY - COMPLETELY REDESIGNED WITH PRODUCT CARDS
    ======================================== */
+
+/* Full-screen backdrop — Apple Vision Pro blur effect */
 .search-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(60px);
-  -webkit-backdrop-filter: blur(60px);
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: saturate(180%) blur(28px);
+  -webkit-backdrop-filter: saturate(180%) blur(28px);
   z-index: 2500;
   display: none;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 60px;
   overflow-y: auto;
-  animation: overlayFloatIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  overscroll-behavior: contain;
+  animation: overlayFloatIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .search-overlay.active {
@@ -343,75 +342,73 @@ body {
 @keyframes overlayFloatIn {
   0% {
     opacity: 0;
-    backdrop-filter: blur(0px);
+    backdrop-filter: saturate(100%) blur(0px);
+    -webkit-backdrop-filter: saturate(100%) blur(0px);
   }
   100% {
     opacity: 1;
-    backdrop-filter: blur(60px);
+    backdrop-filter: saturate(180%) blur(28px);
+    -webkit-backdrop-filter: saturate(180%) blur(28px);
   }
 }
 
-/* Search Modal Container */
+/* Inner modal container */
 .search-modal {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 20px 40px 60px;
-  animation: modalRise 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  padding: 60px 40px 80px;
+  animation: modalRise 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
 }
 
 @keyframes modalRise {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0%  { opacity: 0; transform: translateY(28px); }
+  100%{ opacity: 1; transform: translateY(0);     }
 }
 
-/* Search Header */
+/* ---- Search Header ---- */
 .search-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 36px;
 }
 
 .search-header h2 {
-  color: white;
-  font-size: 2.2rem;
-  font-weight: 600;
-  letter-spacing: -0.5px;
-  background: linear-gradient(135deg, #fff, var(--gold));
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+  line-height: 1.2;
+  background: linear-gradient(135deg, #ffffff 30%, var(--gold) 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  color: transparent;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 8px;
 }
 
 .search-header p {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.88rem;
+  letter-spacing: 0.2px;
 }
 
-/* Search Input Area */
+/* ---- Search Input Area ---- */
 .search-input-area {
-  max-width: 700px;
-  margin: 0 auto 30px;
+  max-width: 680px;
+  margin: 0 auto 28px;
 }
 
 .search-input-wrapper {
   position: relative;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: 60px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  transition: all 0.3s ease;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
 .search-input-wrapper:focus-within {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.13);
   border-color: var(--gold);
-  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.18), 0 8px 32px rgba(212, 175, 55, 0.12);
 }
 
 .search-icon-large {
@@ -419,29 +416,33 @@ body {
   left: 24px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   color: var(--gold);
   pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(212,175,55,0.5));
 }
 
 .search-input-wrapper input {
   width: 100%;
-  padding: 18px 24px 18px 65px;
+  padding: 18px 56px 18px 64px;
   font-size: 1.1rem;
+  font-weight: 500;
   background: transparent;
   border: none;
   outline: none;
-  color: white;
-  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: 0.1px;
 }
 
 .search-input-wrapper input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 400;
 }
 
+/* Clear button */
 .clear-search-btn {
   position: absolute;
-  right: 20px;
+  right: 18px;
   top: 50%;
   transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.1);
@@ -450,12 +451,12 @@ body {
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  transition: all 0.2s;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
   opacity: 0;
   visibility: hidden;
 }
@@ -466,55 +467,63 @@ body {
 }
 
 .clear-search-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
   transform: translateY(-50%) scale(1.1);
 }
 
-/* Quick Filters */
+/* ---- Quick Filter Chips ---- */
 .quick-filters {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 10px;
+  margin-top: 18px;
 }
 
 .filter-chip {
-  background: rgba(255, 255, 255, 0.08);
-  border: 0.5px solid rgba(255, 255, 255, 0.12);
-  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 7px 20px;
   border-radius: 40px;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.82rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  user-select: none;
 }
 
 .filter-chip:hover {
-  background: var(--gold);
-  color: #111;
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--gold);
+  color: var(--gold);
   transform: translateY(-2px);
 }
 
 .filter-chip.active {
   background: var(--gold);
+  border-color: var(--gold);
   color: #111;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
 }
 
-/* Results Header */
+/* ---- Results Header Bar ---- */
 .results-header {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  padding: 20px 0 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 25px;
+  align-items: center;
+  padding: 18px 0 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 24px;
 }
 
 .results-count {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.82rem;
   font-weight: 500;
+  letter-spacing: 0.2px;
 }
 
 .results-count span {
@@ -523,71 +532,88 @@ body {
 }
 
 .close-search-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 7px 18px;
   border-radius: 40px;
-  color: white;
-  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.82rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
 }
 
 .close-search-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-color: rgba(255,255,255,0.25);
 }
 
-/* PRODUCT RESULTS GRID - Beautiful Cards */
+/* ====================================================
+   SEARCH RESULTS GRID — 4 col → 3 → 2 → 1
+   ==================================================== */
 .search-results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
   max-height: 55vh;
   overflow-y: auto;
-  padding: 8px 4px 20px;
+  padding: 6px 4px 24px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) rgba(255,255,255,0.05);
 }
 
 .search-results-grid::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 .search-results-grid::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 10px;
 }
 
 .search-results-grid::-webkit-scrollbar-thumb {
-  background: var(--gold);
+  background: linear-gradient(180deg, var(--gold), var(--gold-dark));
   border-radius: 10px;
 }
 
-/* Search Result Product Card */
+/* ====================================================
+   SEARCH PRODUCT CARD — matches main product card style
+   ==================================================== */
 .search-product-card {
   background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 18px;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   cursor: pointer;
-  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease,
+              background 0.3s ease,
+              border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
   position: relative;
 }
 
 .search-product-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(212, 175, 55, 0.3);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  transform: translateY(-7px) scale(1.015);
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(212,175,55,0.12);
 }
 
+/* Product Image — square, object-fit cover */
 .search-product-image {
   position: relative;
-  padding-top: 100%;
+  padding-top: 100%; /* 1:1 square */
   overflow: hidden;
+  background: rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
 }
 
 .search-product-image img {
@@ -597,387 +623,441 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .search-product-card:hover .search-product-image img {
   transform: scale(1.08);
 }
 
+/* NEW badge */
 .search-product-badge {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 11px;
+  left: 11px;
   background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-  padding: 4px 12px;
+  padding: 3px 11px;
   border-radius: 20px;
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: 0.65rem;
+  font-weight: 800;
   color: #111;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
   z-index: 2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
 }
 
+/* Like / heart button */
 .search-product-like {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(255, 255, 255, 0.9);
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.92);
   border: none;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  font-size: 1.1rem;
+  font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition: transform 0.2s ease, background 0.2s ease;
   z-index: 2;
   backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  color: #aaa;
 }
 
 .search-product-like:hover {
-  transform: scale(1.1);
-  background: white;
+  transform: scale(1.12);
+  background: #fff;
+  color: var(--accent);
 }
 
 .search-product-like.liked {
-  color: #e74c3c;
+  color: var(--accent);
+  animation: heartPop 0.3s ease;
 }
 
+/* Product Info Block */
 .search-product-info {
-  padding: 16px;
+  padding: 14px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .search-product-title {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  color: white;
-  margin-bottom: 6px;
+  color: #ffffff;
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  margin-bottom: 2px;
 }
 
+/* Star rating row */
 .search-product-rating {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 7px;
 }
 
 .search-stars {
   color: var(--gold);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   letter-spacing: 2px;
+  filter: drop-shadow(0 0 3px rgba(212,175,55,0.4));
 }
 
 .search-review-count {
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.68rem;
 }
 
+/* Price in KES */
 .search-product-price {
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 800;
   color: var(--gold);
-  margin-bottom: 12px;
+  letter-spacing: -0.3px;
+  text-shadow: 0 0 10px rgba(212,175,55,0.25);
+  margin-top: 2px;
 }
 
+/* Add to Cart button */
 .search-product-add {
   width: 100%;
-  padding: 10px;
-  background: rgba(229, 62, 62, 0.9);
+  padding: 9px 12px;
+  background: var(--accent);
   border: none;
   border-radius: 40px;
-  color: white;
-  font-weight: 600;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.82rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: auto;
+  letter-spacing: 0.2px;
 }
 
 .search-product-add:hover {
-  background: var(--accent);
+  background: var(--accent-dark);
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(229, 62, 62, 0.35);
 }
 
-/* Loading State */
+.search-product-add:active {
+  transform: translateY(0);
+}
+
+/* ====================================================
+   LOADING SPINNER STATE
+   ==================================================== */
 .search-loading {
   text-align: center;
   padding: 80px 20px;
 }
 
 .loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(255, 255, 255, 0.08);
   border-top-color: var(--gold);
   border-radius: 50%;
   margin: 0 auto 20px;
-  animation: spin 0.8s linear infinite;
+  animation: spin 0.75s linear infinite;
+  box-shadow: 0 0 20px rgba(212,175,55,0.15);
 }
 
 .search-loading p {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-/* No Results State */
+/* ====================================================
+   NO RESULTS STATE
+   ==================================================== */
 .no-results {
   text-align: center;
-  padding: 80px 20px;
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 32px;
-  margin-top: 20px;
+  padding: 70px 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 28px;
+  margin-top: 16px;
+  animation: modalRise 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .no-results-icon {
-  font-size: 80px;
-  margin-bottom: 20px;
-  opacity: 0.5;
+  font-size: 72px;
+  margin-bottom: 18px;
+  opacity: 0.45;
+  display: block;
 }
 
 .no-results h3 {
-  color: white;
-  font-size: 1.5rem;
+  color: rgba(255,255,255,0.85);
+  font-size: 1.4rem;
+  font-weight: 700;
   margin-bottom: 10px;
 }
 
 .no-results p {
-  color: rgba(255, 255, 255, 0.5);
-  margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+  margin-bottom: 28px;
+  line-height: 1.6;
 }
 
 .suggestions-list {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
 
 .suggestion-item {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 7px 18px;
   border-radius: 40px;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.82rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .suggestion-item:hover {
   background: var(--gold);
+  border-color: var(--gold);
   color: #111;
+  transform: translateY(-2px);
 }
 
-/* Popular & Recent Section */
+/* ====================================================
+   POPULAR / RECENT SECTION (shown before typing)
+   ==================================================== */
 .popular-recent-section {
-  margin-top: 30px;
+  margin-top: 28px;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .section-title {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 15px;
+  letter-spacing: 1.2px;
+  margin-bottom: 14px;
+  font-weight: 600;
 }
 
-.popular-tags, .recent-tags {
+.popular-tags,
+.recent-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.popular-tag, .recent-tag {
+.popular-tag,
+.recent-tag {
   background: rgba(255, 255, 255, 0.05);
-  padding: 6px 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 6px 15px;
   border-radius: 30px;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.78rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
-.popular-tag:hover, .recent-tag:hover {
-  background: rgba(255, 255, 255, 0.12);
+.popular-tag:hover,
+.recent-tag:hover {
+  background: rgba(212, 175, 55, 0.12);
+  border-color: rgba(212,175,55,0.3);
   color: var(--gold);
   transform: translateX(3px);
 }
 
-/* Close Button Floating */
+/* ====================================================
+   FLOATING CLOSE BUTTON (top-right X)
+   ==================================================== */
 .close-search-overlay {
   position: fixed;
-  top: 30px;
-  right: 30px;
+  top: 28px;
+  right: 28px;
   width: 48px;
   height: 48px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  border: 0.5px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 50%;
-  font-size: 1.5rem;
-  color: white;
+  font-size: 1.4rem;
+  color: rgba(255,255,255,0.85);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s;
+  transition: background 0.25s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1), border-color 0.25s ease;
   z-index: 2600;
 }
 
 .close-search-overlay:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.18);
   transform: scale(1.08) rotate(90deg);
   border-color: var(--gold);
+  color: #fff;
 }
 
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  .search-overlay {
-    background: rgba(0, 0, 0, 0.85);
-  }
-}
+/* ====================================================
+   RESPONSIVE — GRID BREAKPOINTS
+   ==================================================== */
 
-/* Responsive Design */
-@media (max-width: 1024px) {
+/* 1024px — 3 columns */
+@media (max-width: 1200px) {
   .search-results-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
   }
-  
   .search-modal {
-    padding: 20px 30px 50px;
+    padding: 50px 32px 70px;
   }
 }
 
+/* 900px — 2 columns */
+@media (max-width: 900px) {
+  .search-results-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-height: 52vh;
+  }
+  .search-header h2 {
+    font-size: 1.9rem;
+  }
+  .search-modal {
+    padding: 40px 24px 60px;
+  }
+}
+
+/* 768px — tablet */
 @media (max-width: 768px) {
   .search-overlay {
-    padding-top: 30px;
+    padding-top: 0;
   }
-  
   .search-modal {
-    padding: 15px 20px 40px;
+    padding: 28px 18px 50px;
   }
-  
   .search-header h2 {
     font-size: 1.6rem;
   }
-  
   .search-input-wrapper input {
-    padding: 15px 20px 15px 55px;
+    padding: 15px 50px 15px 54px;
     font-size: 1rem;
   }
-  
   .search-icon-large {
     left: 20px;
     font-size: 1.1rem;
   }
-  
-  .search-results-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-    max-height: 50vh;
-  }
-  
-  .search-product-info {
-    padding: 12px;
-  }
-  
   .search-product-title {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
   }
-  
   .search-product-price {
-    font-size: 1rem;
+    font-size: 0.98rem;
   }
-  
+  .search-product-info {
+    padding: 11px;
+  }
   .close-search-overlay {
-    top: 20px;
-    right: 20px;
+    top: 18px;
+    right: 18px;
     width: 42px;
     height: 42px;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
   }
-  
   .filter-chip {
     padding: 6px 14px;
-    font-size: 0.75rem;
+    font-size: 0.76rem;
   }
 }
 
-@media (max-width: 550px) {
+/* 600px — still 2 columns, smaller cards */
+@media (max-width: 600px) {
   .search-results-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+    max-height: 50vh;
   }
-  
-  .search-modal {
-    padding: 15px 15px 30px;
-  }
-  
   .results-header {
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     align-items: center;
+    text-align: center;
   }
-  
+  .search-modal {
+    padding: 22px 14px 40px;
+  }
   .quick-filters {
-    gap: 8px;
-  }
-  
-  .filter-chip {
-    padding: 5px 12px;
-    font-size: 0.7rem;
+    gap: 7px;
   }
 }
 
+/* 480px — single column */
 @media (max-width: 480px) {
   .search-header h2 {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
   }
-  
   .search-header p {
-    font-size: 0.75rem;
+    font-size: 0.73rem;
   }
-  
   .search-input-wrapper input {
-    padding: 12px 16px 12px 48px;
+    padding: 13px 46px 13px 48px;
     font-size: 0.9rem;
   }
-  
   .search-icon-large {
     left: 16px;
     font-size: 1rem;
   }
-  
   .clear-search-btn {
     width: 28px;
     height: 28px;
     right: 12px;
+    font-size: 0.75rem;
   }
-  
   .search-results-grid {
     grid-template-columns: 1fr;
     gap: 14px;
+    max-height: 58vh;
   }
-  
   .close-search-overlay {
-    top: 15px;
-    right: 15px;
+    top: 14px;
+    right: 14px;
     width: 38px;
     height: 38px;
     font-size: 1.1rem;
   }
-  
   .no-results-icon {
-    font-size: 60px;
+    font-size: 56px;
   }
-  
   .no-results h3 {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
+  }
+  .filter-chip {
+    padding: 5px 11px;
+    font-size: 0.7rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .search-overlay {
+    background: rgba(0, 0, 0, 0.88);
   }
 }
 
